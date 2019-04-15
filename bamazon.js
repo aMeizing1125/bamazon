@@ -2,6 +2,13 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+// trying to make it easier for the customer to view
+// var Table = require('cli-table');
+// var table = new Table({
+//    head: ['TH 1 Item ID', 'TH 2 Product Name', 'TH 3 Price', 'TH 4 Stock' ]
+//    , colWidths: [200, 200]
+// });
+
 var connection = mysql.createConnection({
    host: "localhost",
    // Your port; if not 3306
@@ -31,7 +38,7 @@ function displayProducts() {
          console.log(
             `    ID:      ${pickles.item_id}
     Product: ${pickles.product_name}
-    Price: $  ${pickles.price}
+    Price:   $${pickles.price}.00
     Quantity: ${pickles.stock_quantity}`);
          line();
       })
@@ -57,8 +64,9 @@ function startBamazon() {
          }
       ]
       )
-      .then(function (customerResponse) {
-         console.log(customerResponse.itemID);
+      .then(function (customerResponse, res) {
+         console.log("Product ID Entered: " + customerResponse.itemID);
+ 
          connection.query(
             `SELECT * 
             FROM products
@@ -66,6 +74,7 @@ function startBamazon() {
                if (err) throw err;// err is built in. 
                if (res[0].stock_quantity >= customerResponse.qty) {
                   checkout(res[0], customerResponse);
+                  console.log("Product you selected is: " + res[0].product_name);
                }
                else {
                   console.log(`Not enough inventory ${res[0].product_name}. Please select another item and/or lower your quantity`)
@@ -95,7 +104,7 @@ function checkout(res, customerResponse) {
          connection.query(`SELECT price 
          FROM products
          WHERE item_id=${customerResponse.itemID}`, function (error, result) {
-               console.log("Total Price $" + (result[0].price) * customerResponse.qty);
+               console.log("Total Price for Today's Purchase is: $" + (result[0].price) * customerResponse.qty);
                closeConnection(); //build this out later
             })
       })

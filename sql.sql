@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS bamazon;
 CREATE DATABASE bamazon;
-
+/*well you drop it, and create it, and then use it*/
 USE bamazon;
 
 CREATE TABLE products
@@ -18,9 +18,11 @@ CREATE TABLE products
    (item_id)
 );
 
+SELECT * from products;
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES 
-("Laptop", "technology", 1000, 100),
+("Laptop", "technology", 1000, 50),
 ("Yoga Pants", "Clothing", 15, 100),
 ("Yoga Mat", "Exercise", 40, 100),
 ("Vape", "Entertainment", 50, 100), 
@@ -29,7 +31,6 @@ VALUES
 ("Coffee", "Pantry", 8, 100), 
 ("Dog Food", "Pets", 58, 100), 
 ("Paint", "Household", 3, 100), 
-("Pumps", "Shoe", 100, 100); 
+("Heels", "Shoe", 100, 10); 
 
-
-
+-- DELETE FROM products WHERE item_id=1; dropped database and added it back to fix this.  :) 
